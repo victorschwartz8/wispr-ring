@@ -158,6 +158,33 @@ kbd {
   .flow { grid-template-columns: minmax(0, 1fr); }
   .notes { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Paper version: one letter page, light colors, no Copy button */
+@page { size: letter; margin: 12mm; }
+@media print {
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { background: #ffffff; padding-block: 0; font-size: 13px; }
+  .wrap { gap: 16px; max-width: none; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .wrap > * { grid-column: 1 / -1; }
+  .wrap > header { grid-column: 1; grid-row: 1; align-self: center; }
+  .wrap > .diagram { grid-column: 2; grid-row: 1; }
+  h1 { font-size: 32px; }
+  .diagram { padding: 12px; gap: 8px; }
+  .diagram svg { max-width: 200px; }
+  .switch-note { font-size: 12px; }
+  .cmd code { white-space: nowrap; overflow: visible; font-size: 10.5px; }
+  section > h2 { break-after: avoid; margin-bottom: 8px; }
+  .wrap { gap: 12px; }
+  .rows { gap: 9px; }
+  .btn-card { gap: 8px; }
+  .steps li { padding: 6px 0; }
+  .buttons { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .btn-card { padding: 14px; gap: 10px; }
+  .flow { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); padding: 14px; gap: 16px; }
+  .notes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .btn-card, .flow, .diagram, .notes { break-inside: avoid; }
+  .cmd button { display: none; }
+}
 </style>
 
 <div class="wrap">

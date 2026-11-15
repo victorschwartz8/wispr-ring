@@ -16,7 +16,8 @@ Built for the **FiKavi F3** ring (Bluetooth name "F3"). Keep its side switch on 
 | Hold previous | Select All + Delete. Only in a text field, and beeps anywhere else. ⌘Z undoes |
 
 Hold the ring upright with the USB-C port at the bottom: next is on top, previous
-at the bottom. A printable-style quick reference is in [`ring-guide.html`](ring-guide.html).
+at the bottom. One-page quick reference: [`ring-guide.pdf`](ring-guide.pdf)
+(also as a web page, [`ring-guide.html`](ring-guide.html)).
 
 ## How it works
 
@@ -107,3 +108,7 @@ unpair it from the Mac and pair it with the phone.
 Everything happens in the helper app; the ring itself is unchanged. iPhone doesn't
 let apps intercept a Bluetooth device like this, so on a phone the ring keeps its
 original TikTok and camera-shutter behavior.
+
+## License
+
+[MIT](LICENSE)
