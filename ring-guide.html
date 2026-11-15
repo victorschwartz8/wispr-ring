@@ -1,0 +1,309 @@
+<title>Wispr Ring Controls</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,600;112,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a pocket quick-reference card. Ring diagram on top, one card per button, then the dictation flow. */
+:root {
+  --bg: #eef0f4;
+  --card: #ffffff;
+  --ink: #15171c;
+  --muted: #5d6270;
+  --line: #d9dce4;
+  --accent: #2f55e4;
+  --accent-soft: #e3e9fd;
+  --ring: #23262e;
+  --ring-btn: #3a3f4b;
+  --key: #f3f4f7;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1116; --card: #181b22; --ink: #e9ebf1; --muted: #9aa0ae; --line: #2a2e38;
+    --accent: #8aa2ff; --accent-soft: #1e2645; --ring: #2b2f39; --ring-btn: #454b59; --key: #232733;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1116; --card: #181b22; --ink: #e9ebf1; --muted: #9aa0ae; --line: #2a2e38;
+  --accent: #8aa2ff; --accent-soft: #1e2645; --ring: #2b2f39; --ring-btn: #454b59; --key: #232733;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 48px;
+}
+.wrap { max-width: 920px; margin: 0 auto; display: grid; gap: 28px; }
+
+header { display: grid; gap: 6px; }
+.eyebrow {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--muted);
+}
+h1 {
+  font-family: var(--display); font-weight: 800; font-stretch: 112%;
+  font-size: clamp(30px, 6vw, 44px); line-height: 1.05; margin: 0; letter-spacing: -.01em;
+  text-wrap: balance;
+}
+.lede { margin: 0; color: var(--muted); max-width: 60ch; }
+
+/* Ring diagram */
+.diagram {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 20px; display: grid; gap: 14px; justify-items: center;
+}
+.diagram svg { width: 100%; max-width: 320px; height: auto; display: block; }
+.switch-note {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px;
+  font-size: 14px; color: var(--muted); text-align: center;
+}
+.pos {
+  font-family: var(--mono); font-size: 13px; width: 26px; height: 26px; border-radius: 6px;
+  display: inline-grid; place-items: center; border: 1px solid var(--line); color: var(--muted);
+}
+.pos.on { background: var(--accent); border-color: var(--accent); color: var(--card); }
+
+/* Button cards */
+h2 {
+  font-family: var(--display); font-weight: 600; font-stretch: 112%;
+  font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+  margin: 0 0 12px;
+}
+.buttons { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.btn-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 18px; display: grid; gap: 14px; align-content: start; min-width: 0;
+}
+.btn-head { display: flex; align-items: center; gap: 10px; }
+.btn-head svg { width: 30px; height: 30px; flex-shrink: 0; }
+.btn-head h3 {
+  font-family: var(--display); font-weight: 800; font-stretch: 112%; font-size: 20px; margin: 0;
+}
+.where {
+  font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--muted); margin-left: 4px; vertical-align: middle;
+}
+.rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.row { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 10px; align-items: start; }
+.gesture { display: grid; gap: 4px; justify-items: start; padding-top: 3px; }
+.glyph { display: flex; gap: 4px; align-items: center; height: 12px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--ink); }
+.bar { width: 34px; height: 10px; border-radius: 5px; background: var(--ink); }
+.gname { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .02em; }
+.result { font-weight: 600; }
+.note { display: block; font-size: 13px; color: var(--muted); font-weight: 400; margin-top: 2px; }
+.row.none .result { font-weight: 400; color: var(--muted); }
+.row.none .dot, .row.none .bar { background: var(--line); }
+
+kbd {
+  font-family: var(--mono); font-size: 12px; background: var(--key); border: 1px solid var(--line);
+  border-bottom-width: 2px; border-radius: 5px; padding: 0 5px; white-space: nowrap;
+}
+
+/* Flow */
+.flow {
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px;
+  display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 24px;
+}
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; counter-reset: s; }
+.steps li {
+  counter-increment: s; display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px;
+  padding: 10px 0; border-top: 1px solid var(--line);
+}
+.steps li:first-child { border-top: 0; padding-top: 0; }
+.steps li::before {
+  content: counter(s); font-family: var(--display); font-weight: 800; font-stretch: 112%;
+  font-size: 15px; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--accent-soft); color: var(--accent);
+}
+.steps b { font-weight: 600; }
+.oops {
+  background: var(--accent-soft); border-radius: 10px; padding: 16px; display: grid; gap: 10px;
+  align-content: start;
+}
+.oops h3 { margin: 0; font-family: var(--display); font-weight: 800; font-stretch: 112%; font-size: 17px; }
+.oops p { margin: 0; font-size: 14px; }
+
+/* Notes */
+.notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.notes p { margin: 0; font-size: 14px; color: var(--muted); }
+.notes strong { color: var(--ink); font-weight: 600; }
+.cmd {
+  display: flex; gap: 8px; align-items: center; margin-top: 8px; background: var(--card);
+  border: 1px solid var(--line); border-radius: 8px; padding: 6px 6px 6px 10px; min-width: 0;
+}
+.cmd code {
+  font-family: var(--mono); font-size: 12px; color: var(--ink); overflow-x: auto; white-space: nowrap;
+  flex: 1; min-width: 0;
+}
+.cmd button {
+  font: 500 12px var(--body); color: var(--accent); background: var(--accent-soft);
+  border: 0; border-radius: 6px; padding: 5px 10px; cursor: pointer; flex-shrink: 0;
+}
+.cmd button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+@media (max-width: 760px) {
+  .buttons { grid-template-columns: minmax(0, 1fr); }
+  .flow { grid-template-columns: minmax(0, 1fr); }
+  .notes { grid-template-columns: minmax(0, 1fr); }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">F3 ring · Mac · Wispr Flow</div>
+    <h1>Wispr Ring Controls</h1>
+    <p class="lede">Three buttons, three ways to use each. Press, double press, or hold for about a second.</p>
+  </header>
+
+  <section class="diagram" aria-label="Ring buttons">
+    <svg viewBox="0 0 340 320" role="img" aria-label="The ring face held upright: next on top, middle in the center, previous at the bottom, with the USB-C port on the bottom edge">
+      <rect x="30" y="12" width="120" height="270" rx="60" fill="var(--ring)"/>
+      <!-- next (top) -->
+      <circle cx="90" cy="76" r="30" fill="var(--ring-btn)"/>
+      <path d="M78 82 L90 68 L102 82" fill="none" stroke="var(--key)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- middle -->
+      <rect x="64" y="121" width="52" height="52" rx="12" fill="var(--accent)"/>
+      <rect x="80" y="137" width="20" height="20" rx="3" fill="var(--card)"/>
+      <!-- previous (bottom) -->
+      <circle cx="90" cy="218" r="30" fill="var(--ring-btn)"/>
+      <path d="M78 212 L90 226 L102 212" fill="none" stroke="var(--key)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- USB-C port on the bottom edge -->
+      <rect x="71" y="274" width="38" height="12" rx="6" fill="var(--bg)" stroke="var(--muted)" stroke-width="2"/>
+      <!-- leader lines -->
+      <path d="M126 76 H176 M122 147 H176 M126 218 H176 M112 280 H176" stroke="var(--line)" stroke-width="2"/>
+      <!-- labels -->
+      <text x="184" y="81" font-family="IBM Plex Sans, sans-serif" font-size="16" font-weight="600" fill="var(--ink)">Next</text>
+      <text x="184" y="152" font-family="IBM Plex Sans, sans-serif" font-size="16" font-weight="600" fill="var(--ink)">Middle</text>
+      <text x="184" y="223" font-family="IBM Plex Sans, sans-serif" font-size="16" font-weight="600" fill="var(--ink)">Previous</text>
+      <text x="184" y="278" font-family="IBM Plex Sans, sans-serif" font-size="16" font-weight="600" fill="var(--ink)">USB-C port</text>
+      <text x="184" y="297" font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--muted)">always at the bottom</text>
+    </svg>
+    <div class="switch-note">
+      Keep the side switch on
+      <span class="pos">O</span><span class="pos">T</span><span class="pos on">C</span>
+      O is off. T is TikTok mode and won't work properly.
+    </div>
+  </section>
+
+  <section aria-labelledby="by-button">
+    <h2 id="by-button">By button</h2>
+    <div class="buttons">
+
+      <article class="btn-card">
+        <div class="btn-head">
+          <svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="13" fill="var(--ring-btn)"/><path d="M9 18 L15 12 L21 18" fill="none" stroke="var(--key)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3>Next <span class="where">top</span></h3>
+        </div>
+        <ul class="rows">
+          <li class="row">
+            <div class="gesture"><span class="glyph"><span class="dot"></span></span><span class="gname">press</span></div>
+            <div class="result">Scroll up</div>
+          </li>
+          <li class="row">
+            <div class="gesture"><span class="glyph"><span class="bar"></span></span><span class="gname">hold</span></div>
+            <div class="result">Escape<span class="note">Cancels Wispr while it's listening</span></div>
+          </li>
+        </ul>
+      </article>
+
+      <article class="btn-card">
+        <div class="btn-head">
+          <svg viewBox="0 0 30 30" aria-hidden="true"><rect x="2" y="2" width="26" height="26" rx="7" fill="var(--accent)"/><rect x="10" y="10" width="10" height="10" rx="2" fill="var(--card)"/></svg>
+          <h3>Middle</h3>
+        </div>
+        <ul class="rows">
+          <li class="row">
+            <div class="gesture"><span class="glyph"><span class="dot"></span></span><span class="gname">press</span></div>
+            <div class="result">Start or stop Wispr<span class="note">Sends <kbd>⌃⌥W</kbd>, your hands-free shortcut</span></div>
+          </li>
+          <li class="row">
+            <div class="gesture"><span class="glyph"><span class="dot"></span><span class="dot"></span></span><span class="gname">double</span></div>
+            <div class="result">Enter<span class="note">Sends the message</span></div>
+          </li>
+          <li class="row none">
+            <div class="gesture"><span class="glyph"><span class="bar"></span></span><span class="gname">hold</span></div>
+            <div class="result">Nothing</div>
+          </li>
+        </ul>
+      </article>
+
+      <article class="btn-card">
+        <div class="btn-head">
+          <svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="13" fill="var(--ring-btn)"/><path d="M9 12 L15 18 L21 12" fill="none" stroke="var(--key)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3>Previous <span class="where">bottom</span></h3>
+        </div>
+        <ul class="rows">
+          <li class="row">
+            <div class="gesture"><span class="glyph"><span class="dot"></span></span><span class="gname">press</span></div>
+            <div class="result">Scroll down</div>
+          </li>
+          <li class="row">
+            <div class="gesture"><span class="glyph"><span class="bar"></span></span><span class="gname">hold</span></div>
+            <div class="result">Clear the text box<span class="note"><kbd>⌘A</kbd> then <kbd>Delete</kbd>. Only works in a text box, and beeps anywhere else. <kbd>⌘Z</kbd> brings the text back.</span></div>
+          </li>
+        </ul>
+      </article>
+
+    </div>
+  </section>
+
+  <section aria-labelledby="flow-h">
+    <h2 id="flow-h">Dictating a message</h2>
+    <div class="flow">
+      <ol class="steps">
+        <li><div><b>Click into the text box</b>, then press <b>middle</b>. Wispr starts listening.</div></li>
+        <li><div><b>Speak.</b></div></li>
+        <li><div>Press <b>middle</b> again. Wispr stops and pastes your words.</div></li>
+        <li><div>Read it over, then <b>double press middle</b> to send.</div></li>
+      </ol>
+      <div class="oops">
+        <h3>Messed up?</h3>
+        <p><b>Still talking:</b> hold <b>next</b> to cancel. Nothing gets pasted.</p>
+        <p><b>Already pasted:</b> hold <b>previous</b> to clear the box, then start again.</p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="notes-h">
+    <h2 id="notes-h">Good to know</h2>
+    <div class="notes">
+      <p><strong>Scrolling goes to whatever is under the mouse pointer</strong>, not necessarily the window you're typing in.</p>
+      <div>
+        <p><strong>Ring not responding?</strong> Check that F3 shows as connected in Bluetooth settings, then restart the helper in Terminal:</p>
+        <div class="cmd">
+          <code id="restart-cmd">launchctl kickstart -k gui/$(id -u)/local.wisprring</code>
+          <button type="button" id="copy-btn">Copy</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+document.getElementById('copy-btn').addEventListener('click', function () {
+  var btn = this, text = document.getElementById('restart-cmd').textContent;
+  function selectIt() {
+    var r = document.createRange(); r.selectNodeContents(document.getElementById('restart-cmd'));
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    btn.textContent = 'Press ⌘C';
+  }
+  try {
+    navigator.clipboard.writeText(text).then(function () {
+      btn.textContent = 'Copied';
+      setTimeout(function () { btn.textContent = 'Copy'; }, 1500);
+    }, selectIt);
+  } catch (e) { selectIt(); }
+});
+</script>
